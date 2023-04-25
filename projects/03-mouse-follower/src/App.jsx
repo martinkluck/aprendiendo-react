@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 const FollowMouse = () => {
   const [enabled, setEnabled] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  // Pointer move
   useEffect(() => {
     console.log('Efecto', { enabled });
 
@@ -22,6 +24,20 @@ const FollowMouse = () => {
       window.removeEventListener('pointermove', handleMove);
     };
   }, [enabled]);
+
+  // []  -> solo se ejecuta una vez cuando el componente se monta
+  // [enabled] -> se ejecuta cuando cambia enabled y cuando se monta el componente
+  // undefined -> se ejecuta cada vez que se renderiza el componente
+
+  // change body className
+  useEffect(() => {
+    document.body.classList.toggle('no-cursor', enabled);
+
+    return () => {
+      document.body.classList.remove('no-cursor');
+    };
+  }, [enabled]);
+
   return (
     <>
       <div
@@ -50,7 +66,9 @@ function App() {
   return (
     <main>
       {mounted && <FollowMouse />}
-      <button onClick={() => setMounted(!mounted)}>Toggle Mounted FollowMouse component</button>
+      <button onClick={() => setMounted(!mounted)}>
+        Toggle Mounted FollowMouse component
+      </button>
     </main>
   );
 }
