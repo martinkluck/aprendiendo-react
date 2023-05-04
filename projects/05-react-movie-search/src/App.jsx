@@ -1,17 +1,56 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './App.css';
-// import { useRef } from 'react';
 import { Movies } from './components/Movies';
 import { useMovies } from './hooks/useMovies';
 
-function App() {
-  const { movies } = useMovies();
-  // const inputRef = useRef();
-  const [query, setQuery] = useState('');
+function useSearch() {
+  const [search, updateSearch] = useState('');
   const [error, setError] = useState(null);
+  const isFirstInput = useRef(true);
+
+  useEffect(() => {
+    if (isFirstInput.current) {
+      isFirstInput.current = search === '';
+      return;
+    }
+    if (search === '') {
+      setError('No se puede buscar una película vacía');
+      return;
+    }
+
+    if (search.match(/^\d+$/)) {
+      setError('No se puede buscar por números');
+      return;
+    }
+
+    if (search.length < 3) {
+      setError('No se puede buscar por menos de 3 caracteres');
+      return;
+    }
+
+    setError(null);
+  }, [search]);
+
+  return { search, updateSearch, error };
+}
+
+function App() {
+  const { search, updateSearch, error } = useSearch();
+  const {
+    movies,
+    getMovies,
+    loading,
+    error: errorMovies,
+  } = useMovies({ search });
+  // const inputRef = useRef();
+
+  // const counter = useRef(0);
+  // counter.current++;
+  // console.log(counter.current);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    getMovies();
     // const inputElement = inputRef.current;
     // const value = inputElement.value;
     // const data = new FormData(event.target);
@@ -20,27 +59,8 @@ function App() {
   };
 
   const handleChange = (event) => {
-    setQuery(event.target.value);
+    updateSearch(event.target.value);
   };
-
-  useEffect(() => {
-    if (query === '') {
-      setError('No se puede buscar una película vacía');
-      return;
-    }
-
-    if (query.match(/^d+$/)) {
-      setError('No se puede buscar por números');
-      return;
-    }
-
-    if (query.length < 3) {
-      setError('No se puede buscar por menos de 3 caracteres');
-      return;
-    }
-
-    setError(null);
-  }, [movies]);
 
   return (
     <div className='page'>
@@ -53,17 +73,23 @@ function App() {
           <input
             // ref={inputRef}
             onChange={handleChange}
-            value={query}
+            value={search}
             name='query'
             type='text'
             placeholder='Avengers, Star Wars, The Matrix ...'
+            style={{
+              border: '1px solid transparent',
+              borderColor: error ? 'red' : 'transparent',
+            }}
           />
           <button type='submit'>Buscar</button>
         </form>
+        {error && <p className='error'>{error}</p>}
       </header>
 
       <main>
-        <Movies movies={movies} />
+        {loading ? <p>Cargando ... </p> : <Movies movies={movies} />}
+        {errorMovies && <p className='error'>{errorMovies}</p>}
       </main>
     </div>
   );
