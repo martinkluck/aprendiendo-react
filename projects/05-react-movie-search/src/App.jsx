@@ -51,7 +51,7 @@ function App() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    getMovies();
+    getMovies({ search });
     // const inputElement = inputRef.current;
     // const value = inputElement.value;
     // const data = new FormData(event.target);
