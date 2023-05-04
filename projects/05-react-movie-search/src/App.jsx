@@ -35,13 +35,14 @@ function useSearch() {
 }
 
 function App() {
+  const [sort, setSort] = useState(false);
   const { search, updateSearch, error } = useSearch();
   const {
     movies,
     getMovies,
     loading,
     error: errorMovies,
-  } = useMovies({ search });
+  } = useMovies({ search, sort });
   // const inputRef = useRef();
 
   // const counter = useRef(0);
@@ -57,6 +58,10 @@ function App() {
     // const query = data.get('query');
     // const fields = Object.fromEntries(new FormData(event.target));
   };
+
+  const handleSort = () => {
+    setSort(!sort);
+  }
 
   const handleChange = (event) => {
     updateSearch(event.target.value);
@@ -82,6 +87,7 @@ function App() {
               borderColor: error ? 'red' : 'transparent',
             }}
           />
+          <input type="checkbox" onChange={handleSort} checked={sort} />
           <button type='submit'>Buscar</button>
         </form>
         {error && <p className='error'>{error}</p>}
