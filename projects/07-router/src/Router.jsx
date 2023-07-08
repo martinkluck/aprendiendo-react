@@ -1,14 +1,17 @@
 import { EVENTS } from './consts';
 import { useEffect, useState } from 'react';
 import { match } from 'path-to-regexp';
+import { Children } from 'react';
+import { getCurrentPath } from './utils';
 export default function Router({
+  children,
   routes = [],
   defaultComponent: DefaultComponent = () => null,
 }) {
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [currentPath, setCurrentPath] = useState(getCurrentPath());
   useEffect(() => {
     const onNavigation = () => {
-      setCurrentPath(window.location.pathname);
+      setCurrentPath(getCurrentPath());
     };
     window.addEventListener(EVENTS.PUSHSTATE, onNavigation);
     window.addEventListener(EVENTS.POPSTATE, onNavigation);
@@ -20,7 +23,16 @@ export default function Router({
 
   let routeParams = {};
 
-  const Page = routes.find(({ path }) => {
+  // add routes from children <Route /> components
+  const routesFromChildren = Children.map(children, ({ props, type }) => {
+    const { name } = type;
+    const isRoute = name === 'Route';
+    return isRoute ? props : null;
+  });
+
+  const routesToUse = routes.concat(routesFromChildren).filter(Boolean);
+
+  const Page = routesToUse.find(({ path }) => {
     if (path === currentPath) return true;
 
     const matcherUrl = match(path, { decode: decodeURIComponent });

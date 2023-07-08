@@ -1,30 +1,39 @@
 import './App.css';
-import HomePage from './pages/Home';
-import AboutPage from './pages/About';
+import { lazy } from 'react';
 import Router from './Router';
-import Page404 from './pages/404';
-import SearchPage from './pages/Search';
-import { useEffect } from 'react';
+import Route from './Route';
+import { Suspense } from 'react';
+// import AboutPage from './pages/About'; // import estático
+const AboutPage = lazy(() => import('./pages/About')); // import dinámico
+const HomePage = lazy(() => import('./pages/Home'));
+const Page404 = lazy(() => import('./pages/404'));
+const SearchPage = lazy(() => import('./pages/Search'));
 
 const routes = [
   {
-    path: '/',
-    component: HomePage,
-  },
-  {
-    path: '/about',
-    component: AboutPage,
-  },
-  {
     path: '/search/:query',
     component: SearchPage,
-  }
+  },
 ];
 
 function App() {
   return (
     <main>
-      <Router routes={routes} defaultComponent={Page404} />
+      <Suspense fallback={null}>
+        <Router
+          routes={routes}
+          defaultComponent={Page404}
+        >
+          <Route
+            path='/'
+            component={HomePage}
+          />
+          <Route
+            path='/about'
+            component={AboutPage}
+          />
+        </Router>
+      </Suspense>
     </main>
   );
 }
