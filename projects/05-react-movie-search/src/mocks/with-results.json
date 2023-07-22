@@ -1,0 +1,76 @@
+{
+  "Search": [
+    {
+      "Title": "Star Wars: Episode VI - Return of the Jedi",
+      "Year": "1983",
+      "imdbID": "tt0086190",
+      "Type": "movie",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BOWZlMjFiYzgtMTUzNC00Y2IzLTk1NTMtZmNhMTczNTk0ODk1XkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Star Wars: Episode VIII - The Last Jedi",
+      "Year": "2017",
+      "imdbID": "tt2527336",
+      "Type": "movie",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMjQ1MzcxNjg4N15BMl5BanBnXkFtZTgwNzgwMjY4MzI@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Tales of the Jedi",
+      "Year": "2022–",
+      "imdbID": "tt20723374",
+      "Type": "series",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BODMwYmE1ZGItYWVjNi00ZWUxLWFjYjQtNjdjN2MzNzY0NmRlXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_SX300.jpg"
+    },
+    {
+      "Title": "Star Wars Jedi: Fallen Order",
+      "Year": "2019",
+      "imdbID": "tt5691474",
+      "Type": "game",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMjhhNzNmNGItZGVjYi00N2E5LTliNTktYTMyMGFkZjYzNGEwXkEyXkFqcGdeQXVyMTQ4MjM0MjA@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Star Wars: Jedi Knight II - Jedi Outcast",
+      "Year": "2002",
+      "imdbID": "tt0297410",
+      "Type": "game",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BYmNjNzNkZDYtZGExMy00MzhiLWFhNjMtY2ZkMzM2YTAzNzI1XkEyXkFqcGdeQXVyMTA1OTEwNjE@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Star Wars: Jedi Knight - Jedi Academy",
+      "Year": "2003",
+      "imdbID": "tt0362179",
+      "Type": "game",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BNjI3MDNmNjgtMjhjNy00NzkxLWFjNWEtM2E4YTQyYTkyZWQ0XkEyXkFqcGdeQXVyMTA1OTEwNjE@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Star Wars: Jedi Knight - Dark Forces II",
+      "Year": "1997",
+      "imdbID": "tt0160910",
+      "Type": "game",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BODg4NDNjNzctMzAzOS00Mjc0LTk2MzEtNWE3OWM1ZDVkNWNmL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyNjg3MDM4Mzc@._V1_SX300.jpg"
+    },
+    {
+      "Title": "The Director and the Jedi",
+      "Year": "2018",
+      "imdbID": "tt8080556",
+      "Type": "movie",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BM2I4MjdiMGMtODk3My00YTI5LWFhZDctMDg5NDYwZjdkMjc2XkEyXkFqcGdeQXVyMjE5NjM1Mg@@._V1_SX300.jpg"
+    },
+    {
+      "Title": "From 'Star Wars' to 'Jedi': The Making of a Saga",
+      "Year": "1983",
+      "imdbID": "tt0295270",
+      "Type": "movie",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMjEzOTgyNDg3Nl5BMl5BanBnXkFtZTcwMzE3NjIyMQ@@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Return of the Jedi",
+      "Year": "1983",
+      "imdbID": "tt2301123",
+      "Type": "game",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMTQ2YTE0MmItODU3MC00MTQxLTg5NzQtYmIyZTVhOGQ2NjYwXkEyXkFqcGdeQXVyNzg5OTk2OA@@._V1_SX300.jpg"
+    }
+  ],
+  "totalResults": "126",
+  "Response": "True"
+}
