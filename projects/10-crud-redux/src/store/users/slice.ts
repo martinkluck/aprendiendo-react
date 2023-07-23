@@ -1,16 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-export interface User {
-	name: string;
-	email: string;
-	github: string;
-}
-
-export interface UserState extends User {
-  id: string;
-}
-
-const initialState: UserState[] = [
+const DEFAULT_STATE = [
 	{
 		id: "1",
 		name: "Peter Doe",
@@ -31,10 +21,48 @@ const initialState: UserState[] = [
 	},
 ];
 
+export type UserId = string;
+
+export interface User {
+	name: string;
+	email: string;
+	github: string;
+}
+
+export interface UserState extends User {
+	id: string;
+}
+
+const initialState: UserState[] = (() => {
+	const persistedState = localStorage.getItem("reduxState");
+	if (persistedState) return JSON.parse(persistedState).users;
+	return DEFAULT_STATE;
+})();
+
 export const userSlice = createSlice({
 	name: "users",
 	initialState,
-	reducers: {},
+	reducers: {
+		addNewUser: (state, action: PayloadAction<User>) => {
+			const id = crypto.randomUUID();
+			state.push({ ...action.payload, id });
+			// return [...state, { ...action.payload, id }];
+		},
+		deleteUserById: (state, action: PayloadAction<UserId>) => {
+			return state.filter((user) => user.id !== action.payload);
+		},
+		rollBackUser: (state, action: PayloadAction<UserState>) => {
+			const isUserAlreadyDefined = state.find(
+				(user) => user.id === action.payload.id,
+			);
+			if (!isUserAlreadyDefined) {
+				// return [...state, action.payload];
+        state.push(action.payload);
+			}
+		},
+	},
 });
 
 export default userSlice.reducer;
+
+export const { addNewUser, deleteUserById, rollBackUser } = userSlice.actions;

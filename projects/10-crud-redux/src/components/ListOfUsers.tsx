@@ -9,16 +9,19 @@ import {
 	Title,
 	Badge,
 } from "@tremor/react";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../hooks/store";
+import { useUserActions } from "../hooks/useUserActions";
 
 export default function ListOfUsers() {
-  const users = useSelector((state) => state.users);
+	const users = useAppSelector((state) => state.users);
+	const { removeUser } = useUserActions();
+
 	return (
 		<Card>
-      <Title>
-        Usuarios
-        <Badge>{users.length}</Badge>
-      </Title>
+			<Title>
+				Usuarios
+				<Badge>{users.length}</Badge>
+			</Title>
 			<Table>
 				<TableHead>
 					<TableRow>
@@ -65,7 +68,7 @@ export default function ListOfUsers() {
 										/>
 									</svg>
 								</button>
-								<button type="button">
+								<button type="button" onClick={() => removeUser(item.id)}>
 									{/* rome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
