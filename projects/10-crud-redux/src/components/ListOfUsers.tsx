@@ -17,7 +17,7 @@ export default function ListOfUsers() {
 	const { removeUser } = useUserActions();
 
 	return (
-		<Card>
+		<Card className="row-span-1 rounded-xl bg-neutral-100 p-4 dark:bg-neutral-900 col-span-3 row-span-2">
 			<Title>
 				Usuarios
 				<Badge>{users.length}</Badge>

@@ -23,27 +23,27 @@ export function CreateNewUser() {
   };
 
 	return (
-		<Card className="mt-5">
+		<Card className="row-span-1 rounded-xl bg-neutral-100 p-4 dark:bg-neutral-900 col-span-2 row-span-2 text-white">
 			<Title>Crear nuevo usuario</Title>
 			<form onSubmit={handleSubmit} className="">
 				<TextInput
 					type="text"
 					name="name"
-          autoComplete="name"
+					autoComplete="name"
 					placeholder="Nombre"
 					className="mb-2"
 				/>
 				<TextInput
 					type="email"
 					name="email"
-          autoComplete="email"
+					autoComplete="email"
 					placeholder="Email"
 					className="mb-2"
 				/>
 				<TextInput
 					type="text"
 					name="github"
-          autoComplete="github"
+					autoComplete="github"
 					placeholder="Github"
 					className="mb-2"
 				/>
