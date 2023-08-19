@@ -60,26 +60,26 @@ function App() {
     })
   }, [filteredUsers, sorting])
 
-return (
-  <>
-    <h1>Prueba Técnica</h1>
-    <header>
-      <button onClick={toggleColors}>
-        Colorear Filas
-      </button>
-      <button onClick={toggleSortByCountry}>
-        {sorting === SortBy.COUNTRY ? 'No ordenar por país' : 'Ordenar por país'}
-      </button>
-      <button onClick={handleReset}>Resetear estado</button>
-      <input type="text" placeholder='Filtra por país' onChange={(e) => {
-        setFilterCountry(e.target.value)
-      }} />
-    </header>
-    <main>
-      <UserList changeSorting={handleChangeSort} handleDelete={handleDelete} showColors={showColors} users={sortedUsers} />
-    </main>
-  </>
-)
+  return (
+    <>
+      <h1>Prueba Técnica</h1>
+      <header>
+        <button onClick={toggleColors}>
+          Colorear Filas
+        </button>
+        <button onClick={toggleSortByCountry}>
+          {sorting === SortBy.COUNTRY ? 'No ordenar por país' : 'Ordenar por país'}
+        </button>
+        <button onClick={handleReset}>Resetear estado</button>
+        <input type="text" placeholder='Filtra por país' onChange={(e) => {
+          setFilterCountry(e.target.value)
+        }} />
+      </header>
+      <main>
+        <UserList changeSorting={handleChangeSort} handleDelete={handleDelete} showColors={showColors} users={sortedUsers} />
+      </main>
+    </>
+  )
 }
 
 export default App
