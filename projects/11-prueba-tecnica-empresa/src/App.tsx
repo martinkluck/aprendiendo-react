@@ -1,26 +1,16 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import './App.css'
 import { SortBy, type User } from './types.d'
 import { UserList } from './components/UserList'
-import { useQuery } from '@tanstack/react-query'
-
-const fetchUsers = async (page: number) => {
-  return await fetch(`https://randomuser.me/api/?seed=midudev&results=10&page=${page}`).then(res => {
-    if (!res.ok) throw new Error('Error al obtener usuarios') // Forma correcta de manejar errores en fetch
-    return res.json()
-  })
-    .then(res => res.results)
-}
+import { useUsers } from './hooks/useUsers'
+import { Results } from './components/Results'
 
 function App() {
-  const { isLoading, isError, data: users = [] } = useQuery(['users'], async () => await fetchUsers(1))
-  
+  const { isLoading, isError, users, refetch, fetchNextPage, hasNextPage } = useUsers()
+
   const [showColors, setShowColors] = useState<boolean>(false)
   const [sorting, setSorting] = useState<SortBy>(SortBy.NONE)
   const [filterCountry, setFilterCountry] = useState<string | null>(null)
-  const [currentPage, setCurrentPage] = useState<number>(1)
-
-  const originalUsers = useRef<User[]>([])
 
   const toggleColors = () => {
     setShowColors(!showColors)
@@ -32,36 +22,17 @@ function App() {
   }
 
   const handleDelete = (email: string) => {
-    const filteredUsers = users.filter((user) => user.email !== email)
-    setUsers(filteredUsers)
+    // const filteredUsers = users.filter((user) => user.email !== email)
+    //setUsers(filteredUsers)
   }
 
   const handleChangeSort = (sort: SortBy) => {
     setSorting(sort)
   }
 
-  const handleReset = () => {
-    setUsers(originalUsers.current)
+  const handleReset = async () => {
+    await refetch()
   }
-
-  useEffect(() => {
-    setLoading(true)
-    setError(false)
-    fetchUsers(currentPage)
-      .then(users => {
-        setUsers(prevUsers => {
-          const newUsers = prevUsers.concat(users)
-          prevUsers.concat(newUsers)
-          originalUsers.current = newUsers
-          return newUsers
-        })
-      })
-      .catch(error => {
-        console.log(error)
-        setError(true)
-      })
-      .finally(() => setLoading(false))
-  }, [currentPage])
 
   const filteredUsers = useMemo(() => {
     return filterCountry !== null && filterCountry.length > 0 ? users.filter(user => user.location.country.toLowerCase().includes(filterCountry.toLowerCase())) : users
@@ -83,6 +54,7 @@ function App() {
   return (
     <>
       <h1>Prueba Técnica</h1>
+      <Results />
       <header>
         <button onClick={toggleColors}>
           Colorear Filas
@@ -100,8 +72,8 @@ function App() {
           <UserList changeSorting={handleChangeSort} handleDelete={handleDelete} showColors={showColors} users={sortedUsers} />}
         {isLoading && <p>Cargando...</p>}
         {isError && <p>Ha ocurrido un error</p>}
-        {!isError && users.length === 0 && <p>No hay usuarios</p>}
-        {!isLoading && !isError && <button onClick={() => setCurrentPage(currentPage + 1)}>Cargar mas resultados</button>}
+        {!isLoading && !isError && users.length === 0 && <p>No hay usuarios</p>}
+        {!isLoading && !isError && hasNextPage && <button onClick={() => fetchNextPage()}>Cargar mas resultados</button>}
       </main>
     </>
   )
