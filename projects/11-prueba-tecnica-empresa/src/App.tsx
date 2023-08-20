@@ -2,12 +2,23 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import './App.css'
 import { SortBy, type User } from './types.d'
 import { UserList } from './components/UserList'
+import { useQuery } from '@tanstack/react-query'
+
+const fetchUsers = async (page: number) => {
+  return await fetch(`https://randomuser.me/api/?seed=midudev&results=10&page=${page}`).then(res => {
+    if (!res.ok) throw new Error('Error al obtener usuarios') // Forma correcta de manejar errores en fetch
+    return res.json()
+  })
+    .then(res => res.results)
+}
 
 function App() {
-  const [users, setUsers] = useState<User[]>([])
+  const { isLoading, isError, data: users = [] } = useQuery(['users'], async () => await fetchUsers(1))
+  
   const [showColors, setShowColors] = useState<boolean>(false)
   const [sorting, setSorting] = useState<SortBy>(SortBy.NONE)
   const [filterCountry, setFilterCountry] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState<number>(1)
 
   const originalUsers = useRef<User[]>([])
 
@@ -34,14 +45,23 @@ function App() {
   }
 
   useEffect(() => {
-    fetch('https://randomuser.me/api/?results=100')
-      .then(res => res.json())
-      .then(res => {
-        setUsers(res.results)
-        originalUsers.current = res.results
+    setLoading(true)
+    setError(false)
+    fetchUsers(currentPage)
+      .then(users => {
+        setUsers(prevUsers => {
+          const newUsers = prevUsers.concat(users)
+          prevUsers.concat(newUsers)
+          originalUsers.current = newUsers
+          return newUsers
+        })
       })
-      .catch(error => console.log(error))
-  }, [])
+      .catch(error => {
+        console.log(error)
+        setError(true)
+      })
+      .finally(() => setLoading(false))
+  }, [currentPage])
 
   const filteredUsers = useMemo(() => {
     return filterCountry !== null && filterCountry.length > 0 ? users.filter(user => user.location.country.toLowerCase().includes(filterCountry.toLowerCase())) : users
@@ -76,7 +96,12 @@ function App() {
         }} />
       </header>
       <main>
-        <UserList changeSorting={handleChangeSort} handleDelete={handleDelete} showColors={showColors} users={sortedUsers} />
+        {users.length > 0 &&
+          <UserList changeSorting={handleChangeSort} handleDelete={handleDelete} showColors={showColors} users={sortedUsers} />}
+        {isLoading && <p>Cargando...</p>}
+        {isError && <p>Ha ocurrido un error</p>}
+        {!isError && users.length === 0 && <p>No hay usuarios</p>}
+        {!isLoading && !isError && <button onClick={() => setCurrentPage(currentPage + 1)}>Cargar mas resultados</button>}
       </main>
     </>
   )
